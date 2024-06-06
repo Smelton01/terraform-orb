@@ -11,7 +11,7 @@ download_version() {
 init() {
 	echo "starting to work"
 	echo "Input params are: $*"
-	echo "$TF_PARAM_VERSION"
+	echo "param $TF_PARAM_VERSION"
 	mkdir -p /tmp/terraform-install
 	cd /tmp/terraform-install || exit 1
 }
@@ -78,7 +78,6 @@ determine_version() {
 	return
 }
 
-echo "Starting to work...$@ "
 echo "Starting to work...$1"
 echo "param $TF_PARAM_VERSION"
 init "$@"
