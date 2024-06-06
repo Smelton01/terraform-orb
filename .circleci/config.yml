@@ -37,7 +37,7 @@ jobs:
           tf_version: 1.8.3
 
       - install_terraform:
-          tf_version: TF_VERSION
+          tf_version: ${TF_VERSION}
 
 filters: &filters
   tags:
