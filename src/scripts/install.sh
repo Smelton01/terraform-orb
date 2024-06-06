@@ -1,6 +1,7 @@
 #!/bin/bash
 
 download_version() {
+	echo "Downloading version $1"
 	version=$1
 	local base_url="https://releases.hashicorp.com/terraform/${version}/terraform_${version}"
 	wget -nv "${base_url}_${TF_PARAM_OS}_${TF_PARAM_ARCH}.zip"
@@ -8,6 +9,9 @@ download_version() {
 }
 
 init() {
+	echo "starting to work"
+	echo "Input params are: $*"
+	echo "$1"
 	mkdir -p /tmp/terraform-install
 	cd /tmp/terraform-install || exit 1
 }
@@ -63,17 +67,18 @@ determine_version() {
 	released_versions=$(echo "$index_json" | jq -r '.versions | keys | .[]' | grep -E "$version_regex" | sort -rV)
 
 	if [[ $version_spec = latest ]]; then
-		head -1 <<< "$released_versions"
+		head -1 <<<"$released_versions"
 		return
 	fi
 
-	grep -m1 -E "^$version_spec" <<< "$released_versions" || {
+	grep -m1 -E "^$version_spec" <<<"$released_versions" || {
 		echo "Couldn't find matching version for '$version_spec'"
 		exit 1
 	}
 	return
 }
 
+echo "Starting to work"
 init
 tf_version=$(determine_version "$TF_PARAM_VERSION")
 echo "Using Terraform version '$tf_version'"
