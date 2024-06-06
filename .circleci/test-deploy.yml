@@ -98,7 +98,7 @@ workflows:
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
-          orb-name: circleci/terraform
+          orb-name: smelton01/terraform
           vcs-type: << pipeline.project.type >>
           pub-type: production
           requires:
