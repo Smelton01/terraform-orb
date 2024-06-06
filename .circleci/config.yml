@@ -22,7 +22,7 @@ jobs:
           command: |
             echo "Terraform version: ${TERRAFORM_VERSION}"
       - terraform/install:
-          terraform_version: "${TERRAFORM_VERSION}"
+          terraform_version: $TERRAFORM_VERSION
 
 filters: &filters
   tags:
