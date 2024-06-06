@@ -78,8 +78,8 @@ determine_version() {
 	return
 }
 
-echo "Starting to work"
-init
+echo "Starting to work $@"
+init $@
 tf_version=$(determine_version "$TF_PARAM_VERSION")
 echo "Using Terraform version '$tf_version'"
 download_version "${tf_version}"
