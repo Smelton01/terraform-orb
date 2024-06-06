@@ -5,6 +5,25 @@ orbs:
   shellcheck: circleci/shellcheck@3.1
   terraform: smelton01/terraform@dev:51d3d9e2fd6ec387d189239a2265e5bf4caaa540
 
+jobs:
+  test-something:
+    docker:
+      - image: cimg/base:2022.03
+    steps:
+      - checkout
+      - run:
+          name: Set terraform version env from file
+          command: |
+            TF_VERSION=$(cat .terraform_version)
+            echo "Terrform version: ${TF_VERSION}"
+            echo "export TERRAFORM_VERSION=${TF_VERSION}" >> $BASH_ENV
+      - run:
+          name: Check env set
+          command: |
+            echo "Terraform version: ${TERRAFORM_VERSION}"
+      - terraform/install:
+          terraform_version: "${TERRAFORM_VERSION}"
+
 filters: &filters
   tags:
     only: /.*/
@@ -36,20 +55,4 @@ workflows:
           vcs-type: << pipeline.project.type >>
           requires: [orb-tools/publish]
           filters: *filters
-      - test-something:
-          docker:
-            - image: cimg/base:2022.03
-          steps:
-            - checkout
-            - run:
-                name: Set terraform version env from file
-                command: |
-                  TF_VERSION=$(cat .terraform_version)
-                  echo "Terrform version: ${TF_VERSION}"
-                  echo "export TERRAFORM_VERSION=${TF_VERSION}" >> $BASH_ENV
-            - run:
-                name: Check env set
-                command: |
-                  echo "Terraform version: ${TERRAFORM_VERSION}"
-            - terraform/install:
-                terraform_version: "${TERRAFORM_VERSION}"
+      - test-something
