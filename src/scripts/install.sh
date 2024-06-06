@@ -11,7 +11,7 @@ download_version() {
 init() {
 	echo "starting to work"
 	echo "Input params are: $*"
-	echo "$1"
+	echo "$@"
 	mkdir -p /tmp/terraform-install
 	cd /tmp/terraform-install || exit 1
 }
