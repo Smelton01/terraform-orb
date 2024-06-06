@@ -12,7 +12,7 @@ jobs:
     parameters:
       tf-version:
         type: env_var_name
-        default: TERRAFORM_VERSION
+        default: TF_VERSION
 
     steps:
       - checkout
@@ -21,11 +21,11 @@ jobs:
           command: |
             TF_VERSION=$(cat .terraform_version)
             echo "Terrform version: ${TF_VERSION}"
-            echo "export TERRAFORM_VERSION=${TF_VERSION}" >> $BASH_ENV
+            echo "export TF_VERSION=${TF_VERSION}" >> $BASH_ENV
       - run:
           name: Check env set
           command: |
-            echo "Terraform version: ${TERRAFORM_VERSION}"
+            echo "Terraform version: ${TF_VERSION}"
 
       - terraform/install:
           terraform_version: ${<< parameters.tf-version >>}
