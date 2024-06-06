@@ -5,14 +5,20 @@ orbs:
   shellcheck: circleci/shellcheck@3.1
   terraform: smelton01/terraform@dev:bbe4c076317f74548362e8cc7928b0d2a227ca08
 
+commands:
+  install_terraform:
+    parameters:
+      tf_version:
+        type: string
+        default: "1"
+    steps:
+      - terraform/install:
+          terraform_version: << parameters.tf_version >>
+
 jobs:
   test-something:
     docker:
       - image: cimg/base:2022.03
-    parameters:
-      tf-version:
-        type: env_var_name
-        default: TF_VERSION
 
     steps:
       - checkout
@@ -27,8 +33,8 @@ jobs:
           command: |
             echo "Terraform version: ${TF_VERSION}"
 
-      - terraform/install:
-          terraform_version: ${<< parameters.tf-version >>}
+      - install_terraform:
+          tf_version: $TF_VERSION
 
 filters: &filters
   tags:
