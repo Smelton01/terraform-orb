@@ -9,6 +9,11 @@ jobs:
   test-something:
     docker:
       - image: cimg/base:2022.03
+    parameters:
+      tf-version:
+        type: env_var_name
+        default: TERRAFORM_VERSION
+
     steps:
       - checkout
       - run:
@@ -21,11 +26,9 @@ jobs:
           name: Check env set
           command: |
             echo "Terraform version: ${TERRAFORM_VERSION}"
-      - run:
-          name: run install
-          command: |
-            terraform/install:
-              terraform_version: $(echo $TERRAFORM_VERSION)
+
+      - terraform/install:
+          terraform_version: ${<< parameters.tf-version >>}
 
 filters: &filters
   tags:
